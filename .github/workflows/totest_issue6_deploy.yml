@@ -29,40 +29,23 @@ jobs:
       with:
         creds: ${{secrets.PF_AZURE_CREDENTIALS}}
         
-    - name: Get Primary Storage Key
+    - name: Get Storage Account Key Info
       run: |
-           echo ::set-env name=STORAGE_KEY::$(az storage account keys list -g $baselineResourceGroup -n $baselineVariableStorageAccountName --query "[0].{value:value}" -o tsv)
-
-    - name: Show Primary Storage Key
-      run: echo $STORAGE_KEY
-    
-    - name: Set Storage Connection String
-      run: |
+        echo ::set-env name=STORAGE_KEY::$(az storage account keys list -g $baselineResourceGroup -n $baselineVariableStorageAccountName --query "[0].{value:value}" -o tsv)
         echo ::set-env name=CONNECTION_STRING::'DefaultEndpointsProtocol=https;AccountName='$baselineVariableStorageAccountName';AccountKey='$STORAGE_KEY';EndpointSuffix=core.windows.net'
-
-    - name: Show Storage Connection String
-      run: echo $CONNECTION_STRING
     
-    - name: Get Resource Group Name
+    - name: Get Pipeline Variables
       run: |
         echo ::set-env name=RESOURCEGROUPNAME::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key resourcegroupname --select Content --query "Content" -o tsv)
-       
-    - name: Show Resource Group Name
-      run: echo $RESOURCEGROUPNAME    
-    
-    - name: Get Location
-      run: |
         echo ::set-env name=LOCATION::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key location --select Content --query "Content" -o tsv)
-       
-    - name: Show Location
-      run: echo $LOCATION 
-      
-    - name: Get App Service Plan Name
-      run: |
         echo ::set-env name=APPSERVICEPLANNAME::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key appserviceplanname --select Content --query "Content" -o tsv)
        
-    - name: Get App Service Plan Name
-      run: echo $APPSERVICEPLANNAME 
+    - name: Show Pipeline Variables
+      run: | 
+        echo "Partition key: " + $baselineTablePartitionKey
+        echo "Resource group: " + $RESOURCEGROUPNAME
+        echo "Location: " + $LOCATION 
+        echo "App Service PLan Name:" + $APPSERVICEPLANNAME 
       
 
       
