@@ -74,8 +74,7 @@ jobs:
         
     - name: Deploy App Service Plan
       run: |
-        cd "Code To Push To Environments/App Service Web App/AppServicePlanDeployment"
-        az deployment group create -g $RESOURCEGROUPNAME --template-file azuredeploy.json --parameters @azuredeploy.parameters.json --parameters name=$RESOURCEGROUPNAME location=$LOCATION
+        az deployment group create -g $RESOURCEGROUPNAME --template-file "Code To Push To Environments/App Service Web App/AppServicePlanDeployment/azuredeploy.json" --parameters name=$RESOURCEGROUPNAME location=$LOCATION
       
 
       
