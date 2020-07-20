@@ -9,22 +9,28 @@
             "type": "string"
         },
         "sku": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "Standard"
         },
         "skucode": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "S1"
         },
         "workerSize": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "0"
         },
         "workerSizeId": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "0"
         },
         "numberOfWorkers": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "1"
         },
         "hostingEnvironment": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": ""
         }
     },
     "resources": [
