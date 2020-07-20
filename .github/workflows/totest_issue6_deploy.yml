@@ -29,9 +29,12 @@ jobs:
       with:
         creds: ${{secrets.PF_AZURE_CREDENTIALS}}
         
-    - name: Get Storage Account Key Info
+    - name: Get Primary Storage Key
       run: |
         echo ::set-env name=STORAGE_KEY::$(az storage account keys list -g $baselineResourceGroup -n $baselineVariableStorageAccountName --query "[0].{value:value}" -o tsv)
+        
+    - name: Set Storage Connection String
+      run: |
         echo ::set-env name=CONNECTION_STRING::'DefaultEndpointsProtocol=https;AccountName='$baselineVariableStorageAccountName';AccountKey='$STORAGE_KEY';EndpointSuffix=core.windows.net'
     
     - name: Get Resource Group Name
@@ -47,8 +50,7 @@ jobs:
         echo ::set-env name=APPSERVICEPLANNAME::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key appserviceplanname --select Content --query "Content" -o tsv)
      
     - name: show location
-      run: |
-        echo $LOCATION
+      run: echo $LOCATION
        
     - name: Show Pipeline Variables
       run: | 
