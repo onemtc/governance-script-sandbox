@@ -34,7 +34,8 @@
       "defaultValue": "v4.0"
     },
     "connectionString": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": ""
     }
   },
     "resources": [
