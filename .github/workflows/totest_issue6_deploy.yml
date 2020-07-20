@@ -75,7 +75,11 @@ jobs:
     - name: Deploy App Service Plan
       run: |
         az deployment group create -g $RESOURCEGROUPNAME --template-file "Code To Push To Environments/App Service Web App/AppServicePlanDeployment/azuredeploy.json" --parameters name=$APPSERVICEPLANNAME location=$LOCATION
-      
+        
+    - name: Deploy App Service
+      run: |
+        az deployment group create -g $RESOURCEGROUPNAME --template-file "Code To Push To Environments/App Service Web App/AppServiceDeployment/azuredeploy.json" --parameters name=$APPSERVICENAME location=$LOCATION subscriptionId=$SUBSCRIPTIONID hostingPlanName=$APPSERVICEPLANNAME serverFarmResourceGroup=$RESOURCEGROUPNAME
+    
 
       
 
