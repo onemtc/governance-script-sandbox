@@ -71,6 +71,10 @@ jobs:
     - name: Create Azure Resource Group
       run: |
         az group create --location $LOCATION --name $RESOURCEGROUPNAME --subscription $SUBSCRIPTIONID
+        
+    - name: Deploy App Service Plan
+      run: |
+        az group deployment create -g $RESOURCEGROUPNAME --template-file "Code To Push To Environments/App Service Web App/AppServicePlanDeployment/azuredeploy.json" --parameters "Code To Push To Environments/App Service Web App/AppServicePlanDeployment/azuredeploy.parameters.json" --parameters name=$RESOURCEGROUPNAME location=$LOCATION
       
 
       
