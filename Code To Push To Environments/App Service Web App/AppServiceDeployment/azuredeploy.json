@@ -12,7 +12,8 @@
       "type": "string"
     },
     "hostingEnvironment": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": ""
     },
     "hostingPlanName": {
       "type": "string"
@@ -21,13 +22,16 @@
       "type": "string"
     },
     "alwaysOn": {
-      "type": "bool"
+      "type": "bool",
+      "defaultValue": "true"
     },
     "currentStack": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "dotnet"
     },
     "netFrameworkVersion": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "v4.0"
     },
     "connectionString": {
       "type": "string"
