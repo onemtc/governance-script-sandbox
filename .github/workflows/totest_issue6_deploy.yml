@@ -42,10 +42,10 @@ jobs:
        
     - name: Show Pipeline Variables
       run: | 
-        echo "Partition key: " + $baselineTablePartitionKey
-        echo "Resource group: " + $RESOURCEGROUPNAME
-        echo "Location: " + $LOCATION 
-        echo "App Service PLan Name:" + $APPSERVICEPLANNAME 
+        echo "Partition key:" $baselineTablePartitionKey
+        echo "Resource group:" $RESOURCEGROUPNAME
+        echo "Location:" $LOCATION 
+        echo "App Service Plan Name:" $APPSERVICEPLANNAME 
       
 
       
