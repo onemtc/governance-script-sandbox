@@ -39,6 +39,10 @@ jobs:
         echo ::set-env name=RESOURCEGROUPNAME::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key resourcegroupname --select Content --query "Content" -o tsv)
         echo ::set-env name=LOCATION::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key location --select Content --query "Content" -o tsv)
         echo ::set-env name=APPSERVICEPLANNAME::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key appserviceplanname --select Content --query "Content" -o tsv)
+     
+    - name: show location
+      run: |
+        echo $LOCATION
        
     - name: Show Pipeline Variables
       run: | 
