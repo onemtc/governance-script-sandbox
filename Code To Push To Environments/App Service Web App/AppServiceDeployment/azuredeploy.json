@@ -23,7 +23,7 @@
     },
     "alwaysOn": {
       "type": "bool",
-      "defaultValue": "true"
+      "defaultValue": true
     },
     "currentStack": {
       "type": "string",
