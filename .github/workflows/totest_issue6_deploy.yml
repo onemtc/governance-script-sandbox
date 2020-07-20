@@ -48,16 +48,26 @@ jobs:
     - name: Get App Service Plan Name
       run: |
         echo ::set-env name=APPSERVICEPLANNAME::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key appserviceplanname --select Content --query "Content" -o tsv)
-     
-    - name: show location
-      run: echo $LOCATION
-       
+
+    - name: Get App Service Name
+      run: |
+        echo ::set-env name=APPSERVICENAME::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key appservicename --select Content --query "Content" -o tsv)
+        
+    - name: Get Subscription Id
+      run: |
+        echo ::set-env name=SUBSCRIPTIONID::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key subscriptionid --select Content --query "Content" -o tsv)
+
+
     - name: Show Pipeline Variables
       run: | 
         echo "Partition key:" $baselineTablePartitionKey
         echo "Resource group:" $RESOURCEGROUPNAME
         echo "Location:" $LOCATION 
         echo "App Service Plan Name:" $APPSERVICEPLANNAME 
+        echo "App Service Name:" $APPSERVICENAME
+        echo "Subscription Id:" $SUBSCRIPTIONID
+    
+        
       
 
       
