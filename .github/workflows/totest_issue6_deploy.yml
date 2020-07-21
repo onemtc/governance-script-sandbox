@@ -24,7 +24,9 @@ jobs:
       run: dotnet restore "Code To Push To Environments/App Service Web App/DevAppSample.sln"
       
     - name: Build
-      run: dotnet build --configuration Release --no-restore "Code To Push To Environments/App Service Web App/DevAppSample.sln"
+      run: |
+       dotnet build --configuration Release --no-restore "Code To Push To Environments/App Service Web App/DevAppSample.sln"
+       dotnet publish -c Release -o 'Code To Push To Environments/App Service Web App/DevAppSample/dotnetdefaultapp'
 
     - name: Azure Login
       uses: Azure/login@v1.1
@@ -32,32 +34,25 @@ jobs:
         creds: ${{secrets.PF_AZURE_CREDENTIALS}}
         
     - name: Get Primary Storage Key
-      run: |
-        echo ::set-env name=STORAGE_KEY::$(az storage account keys list -g $baselineResourceGroup -n $baselineVariableStorageAccountName --query "[0].{value:value}" -o tsv)
+      run: echo ::set-env name=STORAGE_KEY::$(az storage account keys list -g $baselineResourceGroup -n $baselineVariableStorageAccountName --query "[0].{value:value}" -o tsv)
         
     - name: Set Storage Connection String
-      run: |
-        echo ::set-env name=CONNECTION_STRING::'DefaultEndpointsProtocol=https;AccountName='$baselineVariableStorageAccountName';AccountKey='$STORAGE_KEY';EndpointSuffix=core.windows.net'
+      run: echo ::set-env name=CONNECTION_STRING::'DefaultEndpointsProtocol=https;AccountName='$baselineVariableStorageAccountName';AccountKey='$STORAGE_KEY';EndpointSuffix=core.windows.net'
     
     - name: Get Resource Group Name
-      run: |
-        echo ::set-env name=RESOURCEGROUPNAME::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key resourcegroupname --select Content --query "Content" -o tsv)
+      run: echo ::set-env name=RESOURCEGROUPNAME::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key resourcegroupname --select Content --query "Content" -o tsv)
         
     - name: Get LOCATION
-      run: |        
-        echo ::set-env name=LOCATION::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key location --select Content --query "Content" -o tsv)
+      run: echo ::set-env name=LOCATION::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key location --select Content --query "Content" -o tsv)
         
     - name: Get App Service Plan Name
-      run: |
-        echo ::set-env name=APPSERVICEPLANNAME::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key appserviceplanname --select Content --query "Content" -o tsv)
+      run: echo ::set-env name=APPSERVICEPLANNAME::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key appserviceplanname --select Content --query "Content" -o tsv)
 
     - name: Get App Service Name
-      run: |
-        echo ::set-env name=APPSERVICENAME::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key appservicename --select Content --query "Content" -o tsv)
+      run: echo ::set-env name=APPSERVICENAME::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key appservicename --select Content --query "Content" -o tsv)
         
     - name: Get Subscription Id
-      run: |
-        echo ::set-env name=SUBSCRIPTIONID::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key subscriptionid --select Content --query "Content" -o tsv)
+      run: echo ::set-env name=SUBSCRIPTIONID::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key subscriptionid --select Content --query "Content" -o tsv)
 
     - name: Show Pipeline Variables
       run: | 
@@ -69,22 +64,18 @@ jobs:
         echo "Subscription Id:" $SUBSCRIPTIONID
     
     - name: Create Azure Resource Group
-      run: |
-        az group create --location $LOCATION --name $RESOURCEGROUPNAME --subscription $SUBSCRIPTIONID
+      run: az group create --location $LOCATION --name $RESOURCEGROUPNAME --subscription $SUBSCRIPTIONID
         
     - name: Deploy App Service Plan
-      run: |
-        az deployment group create -g $RESOURCEGROUPNAME --template-file "Code To Push To Environments/App Service Web App/AppServicePlanDeployment/azuredeploy.json" --parameters name=$APPSERVICEPLANNAME location=$LOCATION
+      run: az deployment group create -g $RESOURCEGROUPNAME --template-file "Code To Push To Environments/App Service Web App/AppServicePlanDeployment/azuredeploy.json" --parameters name=$APPSERVICEPLANNAME location=$LOCATION
         
     - name: Deploy App Service
-      run: |
-        az deployment group create -g $RESOURCEGROUPNAME --template-file "Code To Push To Environments/App Service Web App/AppServiceDeployment/azuredeploy.json" --parameters name=$APPSERVICENAME location=$LOCATION subscriptionId=$SUBSCRIPTIONID hostingPlanName=$APPSERVICEPLANNAME serverFarmResourceGroup=$RESOURCEGROUPNAME
+      run: az deployment group create -g $RESOURCEGROUPNAME --template-file "Code To Push To Environments/App Service Web App/AppServiceDeployment/azuredeploy.json" --parameters name=$APPSERVICENAME location=$LOCATION subscriptionId=$SUBSCRIPTIONID hostingPlanName=$APPSERVICEPLANNAME serverFarmResourceGroup=$RESOURCEGROUPNAME
     
 
-     #       - name: 'Run Azure webapp deploy action using publish profile credentials'
-     #   uses: azure/webapps-deploy@v2
-     #   with: 
-     #     app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
-     #     publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }} # Define secret variable in repository settings as per action documentation
-     #     package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
+    - name: 'Run Azure webapp deploy action using publish profile credentials'
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: dotnetdefault
+        package: 'Code To Push To Environments/App Service Web App/DevAppSample/dotnetdefaultapp'
 
