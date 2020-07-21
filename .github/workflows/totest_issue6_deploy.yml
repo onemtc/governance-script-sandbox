@@ -42,7 +42,7 @@ jobs:
     - name: Get Resource Group Name
       run: echo ::set-env name=RESOURCEGROUPNAME::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key resourcegroupname --select Content --query "Content" -o tsv)
         
-    - name: Get LOCATION
+    - name: Get Location
       run: echo ::set-env name=LOCATION::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key location --select Content --query "Content" -o tsv)
         
     - name: Get App Service Plan Name
@@ -73,7 +73,7 @@ jobs:
       run: az deployment group create -g $RESOURCEGROUPNAME --template-file "Code To Push To Environments/App Service Web App/AppServiceDeployment/azuredeploy.json" --parameters name=$APPSERVICENAME location=$LOCATION subscriptionId=$SUBSCRIPTIONID hostingPlanName=$APPSERVICEPLANNAME serverFarmResourceGroup=$RESOURCEGROUPNAME
     
 
-    - name: 'Run Azure webapp deploy action using publish profile credentials'
+    - name: 'Run Azure webapp deploy action'
       uses: azure/webapps-deploy@v2
       with: 
         app-name: $APPSERVICENAME
