@@ -77,5 +77,5 @@ jobs:
       uses: azure/webapps-deploy@v2
       with: 
         app-name: dotnetdefault
-        package: "Code To Push To Environments/App Service Web App/DevAppSample/dotnetdefaultapp"
+        package: "Code To Push To Environments/App Service Web App/dotnetdefaultapp"
 
