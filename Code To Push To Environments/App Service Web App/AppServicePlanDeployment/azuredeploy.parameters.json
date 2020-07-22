@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "asplan-totestghgovenv"
+            "value": "xxx"
         },
         "hostingEnvironment": {
             "value": ""
         },
         "location": {
-            "value": "eastus2"
+            "value": "xxx"
         },
         "sku": {
             "value": "Standard"
