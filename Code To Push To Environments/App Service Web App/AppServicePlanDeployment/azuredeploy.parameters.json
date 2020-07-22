@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "devopsdemoappserviceplanwest2"
+            "value": "as-totestghgovenv"
         },
         "hostingEnvironment": {
             "value": ""
         },
         "location": {
-            "value": "xxx"
+            "value": "eastus2"
         },
         "sku": {
             "value": "Standard"
