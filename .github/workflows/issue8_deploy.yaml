@@ -1,4 +1,4 @@
-name: Issue6_Deploy
+name: Issue8_Deploy
 
 on: [workflow_dispatch]
 
