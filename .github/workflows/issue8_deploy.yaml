@@ -22,6 +22,7 @@ jobs:
       with:
         repository: onemtc/governance-script-sandbox-corp-templates
         path: corptemplates
+        ref: master
     
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
