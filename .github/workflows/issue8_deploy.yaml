@@ -20,7 +20,7 @@ jobs:
     - name: Checkout Corp Template Repo
       uses: actions/checkout@v2
       with:
-        repository: governance-script-sandbox-corp-templates
+        repository: onemtc/governance-script-sandbox-corp-templates
         path: corptemplates
         ref: master
     
