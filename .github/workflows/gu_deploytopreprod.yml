@@ -6,7 +6,7 @@ env:
   baselineResourceGroup: ghgovenv
   baselineVariableStorageAccountName: ghgovenvnotsecrets
   baselineVariableTableName: pipelinevariables
-  baselineTablePartitionKey: bpdemo
+  baselineTablePartitionKey: topreprodvariables
 
 jobs:
   buildanddeploy:
