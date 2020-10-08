@@ -46,22 +46,22 @@ jobs:
       run: echo "STORAGE_KEY=$(az storage account keys list -g $baselineResourceGroup -n $baselineVariableStorageAccountName --query "[0].{value:value}" -o tsv)" >> $GITHUB_ENV
         
     - name: Set Storage Connection String
-      run: echo ::set-env name=CONNECTION_STRING::'DefaultEndpointsProtocol=https;AccountName='$baselineVariableStorageAccountName';AccountKey='$STORAGE_KEY';EndpointSuffix=core.windows.net'
+      run: echo "CONNECTION_STRING='DefaultEndpointsProtocol=https;AccountName='$baselineVariableStorageAccountName';AccountKey='$STORAGE_KEY';EndpointSuffix=core.windows.net'" >> $GITHUB_ENV
     
     - name: Get Resource Group Name
-      run: echo ::set-env name=RESOURCEGROUPNAME::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key resourcegroupname --select Content --query "Content" -o tsv)
+      run: echo "RESOURCEGROUPNAME=$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key resourcegroupname --select Content --query "Content" -o tsv)" >> $GITHUB_ENV
         
     - name: Get Location
-      run: echo ::set-env name=LOCATION::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key location --select Content --query "Content" -o tsv)
+      run: echo "LOCATION=$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key location --select Content --query "Content" -o tsv)" >> $GITHUB_ENV
         
     - name: Get App Service Plan Name
-      run: echo ::set-env name=APPSERVICEPLANNAME::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key appserviceplanname --select Content --query "Content" -o tsv)
+      run: echo "APPSERVICEPLANNAME=$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key appserviceplanname --select Content --query "Content" -o tsv)" >> $GITHUB_ENV
 
     - name: Get App Service Name
-      run: echo ::set-env name=APPSERVICENAME::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key appservicename --select Content --query "Content" -o tsv)
+      run: echo "APPSERVICENAME=$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key appservicename --select Content --query "Content" -o tsv)" >> $GITHUB_ENV
         
     - name: Get Subscription Id
-      run: echo ::set-env name=SUBSCRIPTIONID::$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key subscriptionid --select Content --query "Content" -o tsv)
+      run: echo "SUBSCRIPTIONID=$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key subscriptionid --select Content --query "Content" -o tsv)" >> $GITHUB_ENV
 
     - name: Show Pipeline Variables
       run: | 
