@@ -43,10 +43,10 @@ jobs:
         creds: ${{secrets.PF_AZURE_CREDENTIALS}}
         
     - name: Get Primary Storage Key
-      run: echo "STORAGE_KEY=$(az storage account keys list -g $baselineResourceGroup -n $baselineVariableStorageAccountName --query "[0].{value:value}" -o tsv)" >> $GITHUB_ENV
+      run: echo $(az storage account keys list -g $baselineResourceGroup -n $baselineVariableStorageAccountName --query "[0].{value:value}" -o tsv) | Out-File -FilePath $env:STORAGE_KEY -Encoding utf8
         
     - name: Set Storage Connection String
-      run: echo "CONNECTION_STRING='DefaultEndpointsProtocol=https;AccountName='$baselineVariableStorageAccountName';AccountKey='$STORAGE_KEY';EndpointSuffix=core.windows.net'" >> $GITHUB_ENV
+      run: echo 'DefaultEndpointsProtocol=https;AccountName='$baselineVariableStorageAccountName';AccountKey='$STORAGE_KEY';EndpointSuffix=core.windows.net' | Out-File -FilePath $env:CONNECTION_STRING -Encoding utf8
     
     - name: Get Resource Group Name
       run: echo "RESOURCEGROUPNAME=$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key resourcegroupname --select Content --query "Content" -o tsv)" >> $GITHUB_ENV
