@@ -49,7 +49,7 @@ jobs:
       run: echo $STORAGE_KEY
         
     - name: Set Storage Connection String
-      run: echo "CONNECTION_STRING='DefaultEndpointsProtocol=https;AccountName='$baselineVariableStorageAccountName';AccountKey='$STORAGE_KEY';EndpointSuffix=core.windows.net'" >> $GITHUB_ENV 
+      run: echo "CONNECTION_STRING=DefaultEndpointsProtocol=https;AccountName=$baselineVariableStorageAccountName;AccountKey=$STORAGE_KEY;EndpointSuffix=core.windows.net" >> $GITHUB_ENV 
     
     - name: Echo Connection String
       run: echo $CONNECTION_STRING
