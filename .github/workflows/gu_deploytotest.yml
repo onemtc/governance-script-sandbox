@@ -12,7 +12,8 @@ jobs:
   buildanddeploy:
 
     runs-on: ubuntu-latest
-
+    environment: test
+    
     steps:
     - name: Checkout Project Repo
       uses: actions/checkout@v2
