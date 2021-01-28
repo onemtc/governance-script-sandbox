@@ -82,11 +82,17 @@ jobs:
     - name: Create Azure Resource Group
       run: az group create --location $LOCATION --name $RESOURCEGROUPNAME --subscription $SUBSCRIPTIONID
         
+    - name: Get App Service Plan Template Spec
+      run: echo "APPSERVICEPLANTEMPLATESPEC=$(az ts show --name GovDemoAppServicePlan --resource-group ghgovenv --version '1.0' --query 'id')"
+        
     - name: Deploy App Service Plan
-      run: az deployment group create -g $RESOURCEGROUPNAME --template-file "corptemplates/Code To Push To Environments/App Service Web App/AppServicePlanDeployment/azuredeploy.json" --parameters name=$APPSERVICEPLANNAME location=$LOCATION
+      run: az deployment group create -g $RESOURCEGROUPNAME --template-spec $APPSERVICEPLANTEMPLATESPEC --parameters name=$APPSERVICEPLANNAME location=$LOCATION
+        
+    - name: Get App Service Template Spec
+      run: echo "APPSERVICETEMPLATESPEC=$(az ts show --name GovDemoAppServicePlan --resource-group ghgovenv --version '1.0' --query 'id')"
         
     - name: Deploy App Service
-      run: az deployment group create -g $RESOURCEGROUPNAME --template-file "corptemplates/Code To Push To Environments/App Service Web App/AppServiceDeployment/azuredeploy.json" --parameters name=$APPSERVICENAME location=$LOCATION subscriptionId=$SUBSCRIPTIONID hostingPlanName=$APPSERVICEPLANNAME serverFarmResourceGroup=$RESOURCEGROUPNAME
+      run: az deployment group create -g $RESOURCEGROUPNAME  --template-spec $APPSERVICETEMPLATESPEC --parameters name=$APPSERVICENAME location=$LOCATION subscriptionId=$SUBSCRIPTIONID hostingPlanName=$APPSERVICEPLANNAME serverFarmResourceGroup=$RESOURCEGROUPNAME
     
 
     - name: 'Run Azure webapp deploy action'
