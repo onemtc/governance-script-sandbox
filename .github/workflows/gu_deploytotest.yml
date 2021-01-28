@@ -89,13 +89,11 @@ jobs:
       run: az deployment group create -g $RESOURCEGROUPNAME --template-spec $APPSERVICEPLANTEMPLATESPEC --parameters name=$APPSERVICEPLANNAME location=$LOCATION
         
     - name: Get App Service Template Spec
-      run: echo "APPSERVICETEMPLATESPEC=$(az ts show --name GovDemoAppServicePlan --resource-group ghgovenv --version '1.0' --query 'id')"  >> $GITHUB_ENV 
+      run: echo "APPSERVICETEMPLATESPEC=$(az ts show --name GovDemoAppService --resource-group ghgovenv --version '1.0' --query 'id')"  >> $GITHUB_ENV 
         
     - name: Deploy App Service
-      run: az deployment group create -g $RESOURCEGROUPNAME  --template-spec $APPSERVICETEMPLATESPEC --parameters name=$APPSERVICENAME location=$LOCATION hostingPlanName=$APPSERVICEPLANNAME serverFarmResourceGroup=$RESOURCEGROUPNAME
-      #run: az deployment group create -g $RESOURCEGROUPNAME  --template-spec $APPSERVICETEMPLATESPEC --parameters name=$APPSERVICENAME location=$LOCATION subscriptionId=$SUBSCRIPTIONID hostingPlanName=$APPSERVICEPLANNAME serverFarmResourceGroup=$RESOURCEGROUPNAME
+      run: az deployment group create -g $RESOURCEGROUPNAME  --template-spec $APPSERVICETEMPLATESPEC --parameters name=$APPSERVICENAME location=$LOCATION subscriptionId=$SUBSCRIPTIONID hostingPlanName=$APPSERVICEPLANNAME serverFarmResourceGroup=$RESOURCEGROUPNAME
     
-
     - name: 'Run Azure webapp deploy action'
       uses: azure/webapps-deploy@v2
       with: 
