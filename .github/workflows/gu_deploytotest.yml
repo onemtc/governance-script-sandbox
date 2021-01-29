@@ -82,14 +82,26 @@ jobs:
     - name: Create Azure Resource Group
       run: az group create --location $LOCATION --name $RESOURCEGROUPNAME --subscription $SUBSCRIPTIONID
         
+    - name: Get App Service Plan Template Spec Name
+      run: echo "APPSERVICEPLANTEMPLATESPECNAME=$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key appserviceplantemplatespec --select Content --query "Content" -o tsv)" >> $GITHUB_ENV
+ 
+    - name: Get App Service Plan Template Spec Version
+      run: echo "APPSERVICEPLANTEMPLATESPECVERSION=$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key appserviceplantemplatespecversion --select Content --query "Content" -o tsv)" >> $GITHUB_ENV
+
     - name: Get App Service Plan Template Spec
-      run: echo "APPSERVICEPLANTEMPLATESPEC=$(az ts show --name GovDemoAppServicePlan --resource-group ghgovenv --version '1.0' --query 'id')"  >> $GITHUB_ENV 
+      run: echo "APPSERVICEPLANTEMPLATESPEC=$(az ts show --name $APPSERVICEPLANTEMPLATESPECNAME --resource-group $baselineResourceGroup --version $APPSERVICEPLANTEMPLATESPECVERSION --query 'id')"  >> $GITHUB_ENV 
         
     - name: Deploy App Service Plan
       run: az deployment group create -g $RESOURCEGROUPNAME --template-spec $APPSERVICEPLANTEMPLATESPEC --parameters name=$APPSERVICEPLANNAME location=$LOCATION
         
+    - name: Get App Service Template Spec Name
+      run: echo "APPSERVICETEMPLATESPECNAME=$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key appservicetemplatespec --select Content --query "Content" -o tsv)" >> $GITHUB_ENV
+ 
+    - name: Get App Service Template Spec Version
+      run: echo "APPSERVICETEMPLATESPECVERSION=$(az storage entity show --connection-string $CONNECTION_STRING --table-name $baselineVariableTableName --partition-key $baselineTablePartitionKey --row-key appservicetemplatespecversion --select Content --query "Content" -o tsv)" >> $GITHUB_ENV
+
     - name: Get App Service Template Spec
-      run: echo "APPSERVICETEMPLATESPEC=$(az ts show --name GovDemoAppService --resource-group ghgovenv --version '1.0' --query 'id')"  >> $GITHUB_ENV 
+      run: echo "APPSERVICETEMPLATESPEC=$(az ts show --name $APPSERVICETEMPLATESPECNAME --resource-group $baselineResourceGroup --version $APPSERVICETEMPLATESPECVERSION --query 'id')"  >> $GITHUB_ENV 
         
     - name: Deploy App Service
       run: az deployment group create -g $RESOURCEGROUPNAME  --template-spec $APPSERVICETEMPLATESPEC --parameters name=$APPSERVICENAME location=$LOCATION subscriptionId=$SUBSCRIPTIONID hostingPlanName=$APPSERVICEPLANNAME serverFarmResourceGroup=$RESOURCEGROUPNAME
