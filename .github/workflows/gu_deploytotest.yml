@@ -12,7 +12,6 @@ jobs:
   buildanddeploy:
 
     runs-on: ubuntu-latest
-    #environment: test
     
     steps:
     - name: Checkout Project Repo
@@ -111,3 +110,12 @@ jobs:
       with: 
         app-name: ${{env.APPSERVICENAME}}
         package: "./releaseoutput"
+        
+    - name: Dispatch to run preprod workflow
+      if: success()
+      run: |
+        curl -X POST https://api.github.com/repos/:org/:repo/dispatches \
+            -H 'Accept: application/vnd.github.everest-preview+json' \
+            -H 'Authorization: token ${{ secrets.REPO_DISPATCH }}' \
+            --data '{"event_type": "preprod"}'
+       
