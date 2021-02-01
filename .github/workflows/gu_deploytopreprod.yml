@@ -18,7 +18,7 @@ jobs:
 
     steps:
     - name: Exit if dispatch is not 'preprod'
-      if: github.event.action != 'preprod'
+      if: github.event.action != 'preprod' || github.event_name == 'workflow_dispatch'
       run: exit 1
           
     - uses: actions/checkout@v2
