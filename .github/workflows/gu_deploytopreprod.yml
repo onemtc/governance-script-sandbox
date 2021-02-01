@@ -3,6 +3,7 @@ name: gu_deploytopreprod
 on: 
   workflow_dispatch:
   repository_dispatch:
+    types: preprod
 
 env:
   baselineResourceGroup: ghgovenv
