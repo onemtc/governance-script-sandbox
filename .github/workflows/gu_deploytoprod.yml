@@ -3,6 +3,7 @@ name: gu_deploytoprod
 on: 
   workflow_dispatch:
   repository_dispatch:
+    types: prod
 
 env:
   baselineResourceGroup: ghgovenv
