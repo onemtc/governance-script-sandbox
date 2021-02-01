@@ -1,8 +1,8 @@
 name: gu_deploytoprod
 
 on: 
-  - workflow_dispatch
-  - repository_dispatch
+  workflow_dispatch:
+  repository_dispatch:
 
 env:
   baselineResourceGroup: ghgovenv
