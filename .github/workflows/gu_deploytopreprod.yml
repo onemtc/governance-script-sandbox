@@ -1,6 +1,8 @@
 name: gu_deploytopreprod
 
-on: [workflow_dispatch]
+on: 
+  - workflow_dispatch
+  - repository_dispatch
 
 env:
   baselineResourceGroup: ghgovenv
@@ -14,6 +16,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Exit if dispatch is not 'preprod'
+      if: github.event.action != 'preprod'
+      run: exit 1
+          
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
@@ -50,3 +56,11 @@ jobs:
       with: 
         app-name: ${{env.APPSERVICENAME}}
         package: "./releaseoutput"
+               
+    - name: Dispatch to run prod workflow
+      if: success()
+      run: |
+        curl -X POST https://api.github.com/repos/:org/:repo/dispatches \
+            -H 'Accept: application/vnd.github.everest-preview+json' \
+            -H 'Authorization: token ${{ secrets.REPO_DISPATCH }}' \
+            --data '{"event_type": "prod"}'
