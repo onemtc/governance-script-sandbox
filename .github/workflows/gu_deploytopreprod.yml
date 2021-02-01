@@ -14,6 +14,7 @@ jobs:
   buildanddeploy:
 
     runs-on: ubuntu-latest
+    environment: govdemo
 
     steps:
     - name: Exit if dispatch is not 'preprod'
