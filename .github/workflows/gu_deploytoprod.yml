@@ -1,6 +1,8 @@
 name: gu_deploytoprod
 
-on: [workflow_dispatch]
+on: 
+  - workflow_dispatch
+  - repository_dispatch
 
 env:
   baselineResourceGroup: ghgovenv
@@ -12,8 +14,13 @@ jobs:
   buildanddeploy:
 
     runs-on: ubuntu-latest
+    environment: govdemo
 
     steps:
+    - name: Exit if dispatch is not 'prod'
+      if: github.event.action != 'prod'
+      run: exit 1
+          
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
