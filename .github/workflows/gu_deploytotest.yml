@@ -114,8 +114,8 @@ jobs:
     - name: Dispatch to run preprod workflow
       if: success()
       run: |
-        curl -X POST https://api.github.com/repos/:org/:repo/dispatches \
-            -H 'Accept: application/vnd.github.everest-preview+json' \
+        curl -X POST https://api.github.com/repos/onemtc/governance-script-sandbox/dispatches \
+            -H 'Accept: application/vnd.github.v3+json' \
             -H 'Authorization: token ${{ secrets.REPO_DISPATCH }}' \
-            --data '{"event_type": "preprod"}'
+            -d '{"event_type": "preprod"}'
        
