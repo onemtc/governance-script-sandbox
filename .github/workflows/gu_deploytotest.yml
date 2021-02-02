@@ -13,18 +13,7 @@ jobs:
 
     runs-on: ubuntu-latest
     
-    steps:
-    - name: Checkout Project Repo
-      uses: actions/checkout@v2
-   
-    - name: Checkout Corp Template Repo
-      uses: actions/checkout@v2
-      with:
-        repository: onemtc/governance-script-sandbox-corp-templates
-        path: corptemplates
-        ref: master
-        # token: ${{secrets.REPO_READ}}
-    
+    steps:    
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
